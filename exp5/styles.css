@@ -1,0 +1,39 @@
+/* Reset default margins and paddings */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body, html {
+    height: 100%;
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+}
+
+/* Navbar styling */
+#navbar {
+    height: 8%;
+    width: 100%;
+    background-color: #007bff;
+}
+
+/* Main container layout */
+#main-container {
+    display: flex;
+    height: 85%;
+}
+
+
+
+/* Content area styling */
+#content {
+    width: 80%;
+    background-color: #ffffff;
+}
+
+iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+}

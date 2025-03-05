@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patient List</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <link rel="stylesheet" href="styles1.css">
+</head>
+<body>
+    <div class="container">
+        <h2>Patient List</h2>
+        <div class="controls">
+            <input type="file" id="fileInput" accept=".csv,.xlsx">
+            <button onclick="exportToCSV()">Export to CSV</button>
+            <button onclick="exportToExcel()">Export to Excel</button>
+        </div>
+        <div class="input-group">
+            <input type="text" id="patientNo" placeholder="Patient No">
+            <input type="text" id="patientName" placeholder="Patient Name">
+            <input type="text" id="phoneNumber" placeholder="Phone Number">
+            <input type="text" id="illness" placeholder="Illness">
+            <input type="date" id="admissionDate" placeholder="Admission Date">
+            <input type="date" id="dischargeDate" placeholder="Discharge Date (if discharged)">
+            <button onclick="addPatient()">Add Patient</button>
+        </div>
+        <table id="patientTable">
+            <thead>
+                <tr>
+                    <th>Patient No</th>
+                    <th>Patient Name</th>
+                    <th>Phone Number</th>
+                    <th>Illness</th>
+                    <th>Admission Date</th>
+                    <th>Discharge Date</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
