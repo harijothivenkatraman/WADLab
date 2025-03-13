@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Resume</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+
+        .container {
+            width: 80%;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        header img {
+            width: 150px;
+            border-radius: 50%;
+            transition: transform 0.3s;
+        }
+
+        header img:hover {
+            transform: scale(1.1);
+        }
+
+        .section h2 {
+            color: #007bff;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .section h2:hover {
+            color: #0056b3;
+        }
+
+        .content {
+            display: none;
+            padding: 10px;
+            background-color: #f1f1f1;
+            border-radius: 5px;
+            margin-top: 10px;
+            font-size: 16px;
+        }
+
+        .content.active {
+            display: block;
+        }
+
+        .footer {
+            text-align: center;
+            font-size: 16px;
+            margin-top: 40px;
+            color: #555;
+        }
+
+        .download-button {
+            display: block;
+            margin: 30px auto;
+            padding: 15px 30px;
+            background-color: #007bff;
+            color: white;
+            font-size: 18px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .download-button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <img id="profilePhoto" src="https://via.placeholder.com/150" alt="Profile Photo">
+            <h1>Hari Jothivenkatraman</h1>
+            <p>M.Sc Computer Science Student | Machine Learning & Web Developer</p>
+        </header>
+        <div class="upload-section">
+            <label for="photoUpload">Upload your Photo:</label>
+            <input type="file" id="photoUpload" onchange="previewPhoto()">
+        </div>
+
+        <div class="section">
+            <h2 onclick="toggleContent('educationContent')">Education</h2>
+            <div id="educationContent" class="content">
+                <ul>
+                    <li>Master of Science in Computer Science - Annamalai University (Ongoing, OCGPA: 8.14)</li>
+                    <li>Bachelor of Science in Civil Engineering - CGPA: 6.9</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 onclick="toggleContent('skillsContent')">Technical Skills</h2>
+            <div id="skillsContent" class="content">
+                <ul>
+                    <li>Python, JavaScript, Dart (Flutter), HTML & CSS</li>
+                    <li>Machine Learning & AI: TensorFlow, Computer Vision</li>
+                    <li>Web Development: Django, React.js, PostgreSQL, REST API</li>
+                    <li>Mobile Development: Flutter</li>
+                    <li>Tools: Git & GitHub, Figma, Web Scraping</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 onclick="toggleContent('softSkillsContent')">Soft Skills</h2>
+            <div id="softSkillsContent" class="content">
+                <ul>
+                    <li>Communication</li>
+                    <li>Problem Solving</li>
+                    <li>Critical Thinking</li>
+                    <li>Teamwork</li>
+                    <li>Decision Making</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 onclick="toggleContent('projectContent')">Projects</h2>
+            <div id="projectContent" class="content">
+                <ul>
+                    <li>Optimizing Flight Booking Decisions through Machine Learning</li>
+                    <li>An Android App for Productivity using Flutter</li>
+                    <li>Django Ecommerce Web Application</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 onclick="toggleContent('certificationsContent')">Certifications</h2>
+            <div id="certificationsContent" class="content">
+                <ul>
+                    <li>First Place in Hackathon (CyberFest 2k24)</li>
+                    <li>Git & GitHub Bootcamp Certificate</li>
+                    <li>Accenture Data Analytics & Visualization</li>
+                    <li>Figma Bootcamp Certificate</li>
+                    <li>Java & Python 3-Star Badge on HackerRank</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>Contact: <a href="mailto:Harijothivenkatraman@gmail.com" target="_blank">Harijothivenkatraman@gmail.com</a> | Phone: 6380350175</p>
+            <p>Portfolio: <a href="http://hari-jothivenkatraman.neocities.org/" target="_blank">hari-jothivenkatraman.neocities.org</a></p>
+            <p>LinkedIn: <a href="https://www.linkedin.com/in/hari-jothivenkatraman-563a79281/" target="_blank">LinkedIn Profile</a></p>
+            <p>GitHub: <a href="https://github.com/harijothivenkatraman" target="_blank">GitHub Profile</a></p>
+        </div>
+    </div>
+
+        <button class="download-button" onclick="downloadResume()">Download Resume as PDF</button>
+
+    <script>
+        function toggleContent(contentId) {
+            const contentElement = document.getElementById(contentId);
+            contentElement.classList.toggle('active');
+        }
+        // Photo upload and preview functionality
+        function previewPhoto() {
+        const file = document.getElementById('photoUpload').files[0];
+        const reader = new FileReader();
+
+        reader.onloadend = function () {
+            const profileImage = document.getElementById('profilePhoto');
+            profileImage.src = reader.result;
+            document.getElementById('photoUpload').style.display = 'none';  
+        };
+
+        if (file) {
+            reader.readAsDataURL(file);
+        } else {
+            alert("No file selected");
+        }
+    }
+
+
+        function downloadResume() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+
+            doc.setFontSize(18);
+            doc.text("Hari Jothivenkatraman", 20, 20);
+            doc.setFontSize(12);
+            doc.text("M.Sc Computer Science Student | Machine Learning & Web Developer", 20, 30);
+
+            doc.setFontSize(16);
+            doc.text("Education", 20, 50);
+            doc.setFontSize(12);
+            doc.text("Master of Science in Computer Science - Annamalai University (Ongoing, OCGPA: 8.14)", 20, 60);
+            doc.text("Bachelor of Science in Civil Engineering - CGPA: 6.9", 20, 70);
+
+            doc.setFontSize(16);
+            doc.text("Technical Skills", 20, 90);
+            doc.setFontSize(12);
+            doc.text("Python, JavaScript, Dart (Flutter), HTML & CSS", 20, 100);
+            doc.text("Machine Learning & AI: TensorFlow, Computer Vision", 20, 110);
+            doc.text("Web Development: Django, React.js, PostgreSQL, REST API", 20, 120);
+            doc.text("Mobile Development: Flutter", 20, 130);
+            doc.text("Tools: Git & GitHub, Figma, Web Scraping", 20, 140);
+
+            doc.setFontSize(16);
+            doc.text("Projects", 20, 160);
+            doc.setFontSize(12);
+            doc.text("- Optimizing Flight Booking Decisions through Machine Learning", 20, 170);
+            doc.text("- An Android App for Productivity using Flutter", 20, 180);
+            doc.text("- Django Ecommerce Web Application", 20, 190);
+
+            doc.setFontSize(16);
+            doc.text("Certifications", 20, 210);
+            doc.setFontSize(12);
+            doc.text("- First Place in Hackathon (CyberFest 2k24)", 20, 220);
+            doc.text("- Git & GitHub Bootcamp Certificate", 20, 230);
+            doc.text("- Accenture Data Analytics & Visualization", 20, 240);
+            doc.text("- Figma Bootcamp Certificate", 20, 250);
+            doc.text("- Java & Python 3-Star Badge on HackerRank", 20, 260);
+
+            doc.save("Resume_HariJothivenkatraman.pdf");
+        }
+    </script>
+</body>
+</html>
